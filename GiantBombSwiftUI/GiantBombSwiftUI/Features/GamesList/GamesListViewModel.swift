@@ -19,4 +19,12 @@ final class GamesListViewModel: ObservableObject {
   init(container: DIContainer) {
     self.gameRepository = container.gameRepository
   }
+  
+  func getGames(searchString: String) async {
+    do {
+      self.games = try await self.gameRepository.getGame(searchString: searchString)
+    } catch {
+      print(error.localizedDescription)
+    }
+  }
 }

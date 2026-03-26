@@ -13,12 +13,16 @@ struct GamesListView: View {
   
   var body: some View {
     VStack {
-      Image(systemName: "globe")
-        .imageScale(.large)
-        .foregroundStyle(.tint)
-      Text("Hello, world!")
+      List(viewModel.games) { game in
+        Text(game.name)
+        //      NavigationLink(destination: GameDetailView(viewModel: .init(game: game))) {
+        //        GameListItemView(viewModel: .init(game: game))
+        //      }
+      }
     }
-    .padding()
+    .task {
+      await viewModel.getGames(searchString: "Halo")
+    }
   }
 }
 

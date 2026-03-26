@@ -53,9 +53,36 @@ final class APIService: APIServiceProtocol {
   
   func request<T: Decodable>(_ endpoint: any APIEndpoint) async throws -> T {
     let data = try await performRequest(endpoint)
+    
+    // Debug: Print raw response
+    if let jsonString = String(data: data, encoding: .utf8) {
+      print("📦 API Response (\(data.count) bytes): \(jsonString)")
+    } else {
+      print("📦 API Response: Unable to convert to string. Data count: \(data.count)")
+    }
+    
     do {
-      return try decoder.decode(T.self, from: data)
+      let result = try decoder.decode(T.self, from: data)
+      print("✅ Successfully decoded response")
+      return result
+    } catch let DecodingError.keyNotFound(key, context) {
+      print("❌ Decoding Error: Key '\(key.stringValue)' not found")
+      print("   Context: \(context.debugDescription)")
+      print("   Coding Path: \(context.codingPath)")
+      throw APIError.decodingFailed(DecodingError.keyNotFound(key, context))
+    } catch let DecodingError.typeMismatch(type, context) {
+      print("❌ Decoding Error: Type mismatch for type \(type)")
+      print("   Context: \(context.debugDescription)")
+      print("   Coding Path: \(context.codingPath)")
+      throw APIError.decodingFailed(DecodingError.typeMismatch(type, context))
+    } catch let DecodingError.valueNotFound(type, context) {
+      print("❌ Decoding Error: Value not found for type \(type)")
+      print("   Context: \(context.debugDescription)")
+      print("   Coding Path: \(context.codingPath)")
+      throw APIError.decodingFailed(DecodingError.valueNotFound(type, context))
     } catch {
+      print("❌ Decoding Error: \(error.localizedDescription)")
+      print("   Full error: \(error)")
       throw APIError.decodingFailed(error)
     }
   }

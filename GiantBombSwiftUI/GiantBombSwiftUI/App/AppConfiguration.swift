@@ -30,12 +30,12 @@ enum AppConfiguration {
   
   static var apiBaseURL: String {
     switch current {
-    case .development:  return "https://www.giantbomb.com/api"
-    case .staging:      return "https://www.giantbomb.com/api"
-    case .production:   return "https://www.giantbomb.com/api"
+    case .development:  return "https://api.gamebrain.co/v1"
+    case .staging:      return "https://api.gamebrain.co/v1"
+    case .production:   return "https://api.gamebrain.co/v1"
     }
   }
   
   /// API key / token — read from Info.plist in production.
-  static let apiKey: String = "d1c95cbbe827f44c2d4a6eb17556b9427415fff7"
+  static let apiKey: String = "79dc94acb32449abb82c4aef80b18968"
 }

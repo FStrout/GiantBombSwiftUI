@@ -61,6 +61,8 @@ extension APIEndpoint {
       throw APIError.invalidURL
     }
     
+    print("📡 API Request URL: \(url.absoluteString)")
+    
     var request = URLRequest(url: url)
     request.httpMethod = method.rawValue
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -102,10 +104,23 @@ enum GameEndpoint: APIEndpoint {
   
   var baseURL: String { AppConfiguration.apiBaseURL }
   
+  var headers: [String : String]? {
+    ["x-api-key": "\(AppConfiguration.apiKey)"]
+  }
+  
   var path: String {
     switch self {
-    case .getGame(searchString: let searchString):
-      return "/games/?api_key=\(AppConfiguration.apiKey)&format=json&query=\(searchString.lowercased())"
+    case .getGame:
+      return "/games"
+    }
+  }
+  
+  var queryItems: [URLQueryItem]? {
+    switch self {
+    case .getGame(let searchString):
+      return [
+        URLQueryItem(name: "query", value: searchString)
+      ]
     }
   }
   
