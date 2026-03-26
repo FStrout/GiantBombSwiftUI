@@ -9,9 +9,14 @@ import SwiftUI
 
 @main
 struct GiantBombSwiftUIApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
+  
+  // The container is created once here and passed down via environment.
+  @StateObject private var container = DIContainer.shared
+  
+  var body: some Scene {
+    WindowGroup {
+      GamesListView(viewModel: GamesListViewModel(container: container))
+        .environmentObject(container)
     }
+  }
 }
