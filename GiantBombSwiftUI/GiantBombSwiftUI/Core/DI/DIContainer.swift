@@ -28,6 +28,8 @@ final class DIContainer: ObservableObject {
     apiService: apiService
   )
   
+  lazy var healthkitRepository: any HealthKitRepositoryProtocol = HealthKitRepository()
+  
   // MARK: - Designated Init
   
   init(apiService: APIServiceProtocol) {
