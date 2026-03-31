@@ -24,6 +24,10 @@ final class DIContainer: ObservableObject {
   
   // MARK: - Repositories
   
+  lazy var usdaRepository: UsdaRepositoryProtocol = UsdaRepository(
+    apiService: apiService
+  )
+  
   lazy var gameRepository: GameRepositoryProtocol = GameRepository(
     apiService: apiService
   )

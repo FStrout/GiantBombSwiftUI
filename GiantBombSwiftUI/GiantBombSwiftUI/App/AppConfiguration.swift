@@ -36,6 +36,15 @@ enum AppConfiguration {
     }
   }
   
+  static var usdaApiBaseURL: String {
+    switch current {
+    case .development:  return "https://api.nal.usda.gov/fdc/v1"
+    case .staging:      return "https://api.nal.usda.gov/fdc/v1"
+    case .production:   return "https://api.nal.usda.gov/fdc/v1"
+    }
+  }
+  
   /// API key / token — read from Info.plist in production.
   static let apiKey: String = "79dc94acb32449abb82c4aef80b18968"
+  static let usdaApiKey: String = "ycCVTkMlMpQj44wUdzVqWFGDelJ0QJQLLMxO9wWq"
 }

@@ -99,6 +99,34 @@ private struct AnyEncodable: Encodable {
   }
 }
 
+enum UsdaEndpoint: APIEndpoint {
+  case getFoods(searchString: String)
+  
+  var baseURL: String { AppConfiguration.usdaApiBaseURL }
+  
+  var headers: [String : String]? {
+    ["x-api-key": "\(AppConfiguration.usdaApiKey)"]
+  }
+  
+  var path: String {
+    switch self {
+    case .getFoods:
+      return "/foods/search"
+    }
+  }
+  
+  var queryItems: [URLQueryItem]? {
+    switch self {
+    case .getFoods(let searchString):
+      return [
+        URLQueryItem(name: "query", value: searchString)
+      ]
+    }
+  }
+  
+  var method: HTTPMethod { .get }
+}
+
 enum GameEndpoint: APIEndpoint {
   case getGame(searchString: String)
   

@@ -15,8 +15,8 @@ struct GiantBombSwiftUIApp: App {
   
   var body: some Scene {
     WindowGroup {
-      // GamesListView(viewModel: GamesListViewModel(container: container))
-      SleepAnalysisView(viewModel: HealthKitViewModel(container: container))
+      // SleepAnalysisView(viewModel: HealthKitViewModel(container: container))
+      GamesListView(viewModel: GamesListViewModel(container: container))
         .environmentObject(container)
     }
   }

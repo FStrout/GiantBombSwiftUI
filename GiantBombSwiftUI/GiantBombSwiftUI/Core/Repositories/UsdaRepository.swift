@@ -1,17 +1,17 @@
 //
-//  GameRepository.swift
+//  UsdaRepository.swift
 //  GiantBombSwiftUI
 //
-//  Created by Fred Strout on 3/26/26.
+//  Created by Fred Strout on 3/31/26.
 //
 
 import Foundation
 
 // MARK: - Protocol
 
-protocol GameRepositoryProtocol {
+protocol UsdaRepositoryProtocol {
   /// Fetches a game from the API.
-  func getGame(searchString: String) async throws -> [Game]
+  func getFoods(searchString: String) async throws -> [Food]
   
   /// Clears all locally cached users (e.g. on sign-out).
   func clearCache() throws
@@ -19,7 +19,7 @@ protocol GameRepositoryProtocol {
 
 // MARK: - Concrete Implementation
 
-final class GameRepository: GameRepositoryProtocol {
+final class UsdaRepository: UsdaRepositoryProtocol {
   
   // MARK: - Dependencies
   
@@ -31,10 +31,10 @@ final class GameRepository: GameRepositoryProtocol {
     self.apiService = apiService
   }
   
-  // MARK: - GameRepositoryProtocol
-  func getGame(searchString: String) async throws -> [Game] {
-    let response: GameResult = try await apiService.request(GameEndpoint.getGame(searchString: searchString))
-    return response.results
+  // MARK: - FoodRepositoryProtocol
+  func getFoods(searchString: String) async throws -> [Food] {
+    let response: FoodSearchResponse = try await apiService.request(UsdaEndpoint.getFoods(searchString: searchString))
+    return response.foods
   }
   
   func clearCache() throws {
@@ -45,18 +45,18 @@ final class GameRepository: GameRepositoryProtocol {
 // MARK: - Mock Implementation (for unit tests & SwiftUI previews)
 
 #if DEBUG
-final class MockGameRepository: GameRepositoryProtocol {
+final class MockUsdaRepository: UsdaRepositoryProtocol {
   
   var stubbedError: Error?
-  var stubbedGames: [Game]?
+  var stubbedFoods: [Food]?
   
   private(set) var searchString: String?
   private(set) var clearCacheCalled = false
   
-  func getGame(searchString: String) async throws -> [Game] {
+  func getFoods(searchString: String) async throws -> [Food] {
     self.searchString = searchString
     if let error = stubbedError { throw error }
-    return stubbedGames ?? GameResult.preview
+    return stubbedFoods ?? FoodSearchResponse.preview
   }
   
   func clearCache() throws {
